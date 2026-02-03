@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Ratanang</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;600&family=Playfair+Display:italic,wght@700&display=swap');
+
+        :root {
+            --primary-pink: #ffafcc;
+            --accent-pink: #fb6f92;
+            --deep-rose: #c9184a;
+            --glass: rgba(255, 255, 255, 0.95);
+            --shadow: 0 20px 50px rgba(0,0,0,0.1);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background: linear-gradient(135deg, #fff0f3 0%, #ffccd5 100%);
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+            color: #444;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- ENVELOPE SECTION --- */
+        #splash {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #fff5f7, #ffccd5);
+            transition: opacity 0.8s ease;
+        }
+
+        .envelope-wrapper {
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .envelope-wrapper:hover { transform: scale(1.05) rotate(2deg); }
+
+        .envelope-main {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            background: #f8adbc;
+            border-radius: 8px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-main::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 0; height: 0;
+            border-style: solid;
+            border-width: 100px 0 100px 150px;
+            border-color: transparent transparent transparent rgba(255,255,255,0.25);
+        }
+
+        .envelope-main::after {
+            content: "";
+            position: absolute;
+            top: 0; right: 0; width: 0; height: 0;
+            border-style: solid;
+            border-width: 100px 150px 100px 0;
+            border-color: transparent rgba(255,255,255,0.25) transparent transparent;
+        }
+
+        .button-seal {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            background: #ff4d6d;
+            border-radius: 50%;
+            border: 4px solid #c9184a;
+            z-index: 10;
+            display: grid; grid-template-columns: 1fr 1fr;
+            padding: 12px; gap: 6px;
+            animation: breathe 2s infinite;
+        }
+        @keyframes breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+        .hole { background: #800f2f; border-radius: 50%; width: 10px; height: 10px; }
+
+        /* --- CONTENT SECTION --- */
+        #content {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 40px;
+            padding: 60px 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            color: var(--deep-rose);
+            margin-bottom: 30px;
+        }
+
+        .poem-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: #4a4a4a;
+            max-width: 600px;
+            margin: 0 auto 40px auto;
+        }
+
+        .poem-stanza { margin-bottom: 25px; }
+
+        .slideshow-frame {
+            position: relative;
+            width: 100%; max-width: 500px; height: 400px;
+            margin: 40px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #fff;
+            border: 10px solid white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; transition: opacity 1s ease-in-out; object-fit: cover;
+        }
+        .slide.active { opacity: 1; }
+
+        /* --- BUTTONS --- */
+        .btn-yes {
+            background: var(--accent-pink);
+            color: white;
+            padding: 20px 70px;
+            font-size: 1.6rem;
+            border-radius: 60px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            box-shadow: 0 15px 30px rgba(251, 111, 146, 0.3);
+            transition: 0.3s;
+        }
+        .btn-yes:hover { transform: scale(1.1); background: var(--deep-rose); }
+        #noBtn { background: #f0f0f0; color: #999; border: none; padding: 12px 25px; border-radius: 50px; cursor: pointer; margin-top: 20px; }
+
+        /* --- SUCCESS PAGE --- */
+        #success {
+            display: none;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        .grateful-letter {
+            font-size: 1.2rem;
+            line-height: 2;
+            color: #444;
+            text-align: left;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            border-left: 2px solid var(--accent-pink);
+        }
+
+        .video-container {
+            width: 100%; max-width: 450px;
+            margin: 30px auto;
+            border-radius: 25px;
+            overflow: hidden;
+            aspect-ratio: 9 / 16;
+            background: #000;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .particle { position: fixed; pointer-events: none; z-index: 1000; animation: floatUp 4s forwards linear; }
+        @keyframes floatUp { 0% { transform: translateY(100vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <!-- STEP 1: THE ENVELOPE -->
+    <div id="splash">
+        <div class="envelope-wrapper" onclick="openLetter()">
+            <div class="envelope-main">
+                <div class="button-seal">
+                    <div class="hole"></div><div class="hole"></div>
+                    <div class="hole"></div><div class="hole"></div>
+                </div>
+            </div>
+        </div>
+        <p style="margin-top: 40px; letter-spacing: 5px; font-weight: 600; color: var(--deep-rose); font-size: 0.9rem;">FOR MY RATANANG</p>
+    </div>
+
+    <!-- STEP 2: THE MAIN CONTENT -->
+    <div id="content">
+        <div class="glass-card">
+            <iframe src="https://open.spotify.com/embed/track/4nHZz756JdbAkRqMqT06rM?utm_source=generator" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+            <h1>My Dearest Ratanang,</h1>
+
+            <div class="poem-text">
+                <div class="poem-stanza">
+                    I love you for your kindness.<br>
+                    You give warmth through small acts.<br>
+                    You choose gentle words.<br>
+                    You hold my hand with care.<br>
+                    You meet my eyes with honesty.
+                </div>
+                <div class="poem-stanza">
+                    You give reasons to keep going.<br>
+                    You wake hope inside my chest.<br>
+                    You bring light to slow mornings.<br>
+                    You bring peace to late nights.
+                </div>
+                <div class="poem-stanza">
+                    I care about you with action.<br>
+                    I show up on hard days.<br>
+                    I listen with focus.<br>
+                    I protect your heart.<br>
+                    I respect your space.
+                </div>
+                <div class="poem-stanza">
+                    Your smile changes my mood.<br>
+                    Your laugh fills quiet rooms.<br>
+                    Your voice slows my breath.<br>
+                    Your touch brings calm.
+                </div>
+                <div class="poem-stanza">
+                    When days feel heavy.<br>
+                    You stay close. You stay present.<br>
+                    You stay soft with me.
+                </div>
+                <div class="poem-stanza">
+                    I choose you each day.<br>
+                    I choose loyalty. I choose patience.<br>
+                    I choose growth beside you.
+                </div>
+                <div class="poem-stanza" style="font-size: 1.4rem; color: var(--deep-rose); font-family: 'Playfair Display', serif;">
+                    I love you. I stay close.<br>
+                    I care deeply. I choose you.
+                </div>
+            </div>
+
+            <div class="slideshow-frame">
+                <img class="slide active" src="https://drive.google.com/thumbnail?id=1GZXc4dLA-Yug2hsw8GUXcD98Q-Ukn_j2&sz=w1000">
+                <img class="slide" src="https://drive.google.com/thumbnail?id=1528eqIQkAROI6OBJTUDRraAin5eJEwfn&sz=w1000">
+                <img class="slide" src="https://drive.google.com/thumbnail?id=1JwZ5U2hTpi1NuFeq4CTucwOe6lKUcjri&sz=w1000">
+                <img class="slide" src="https://drive.google.com/thumbnail?id=1vL_3mJGuZk0-Dn-YvntKrRNyhSdnM6Gx&sz=w1000">
+            </div>
+
+            <div style="margin-top: 50px;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--deep-rose);">Will you be my Valentine?</h2>
+                <button class="btn-yes" onclick="showSuccess()">YES! ❤️</button>
+                <br>
+                <button id="noBtn" onmouseover="moveNo()">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 3: SUCCESS PAGE -->
+    <div id="success">
+        <div class="glass-card">
+            <div style="font-size: 80px; margin-bottom: 10px;">🧸</div>
+            <h1>Thank you for choosing me.</h1>
+            
+            <iframe src="https://open.spotify.com/embed/track/723kBcWHaPWeAApqdYguSI?utm_source=generator" width="100%" height="80" frameBorder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+            <div class="grateful-letter">
+                My heart is so incredibly full right now. Thank you, Ratanang, for choosing to walk this life with me. Out of everyone in the world, you chose me, and I promise to never take that for granted.<br><br>
+                You are my teammate, my best friend, and my safest place. No matter how heavy the days feel or what the world throws our way, I’m not going anywhere. <br><br>
+                <strong>It's me and you, forever against the world.</strong> I am so grateful for your existence and so lucky to call you mine.
+            </div>
+
+            <div class="video-container">
+                <iframe src="https://drive.google.com/file/d/1Z7v_dQladQ1lvE3T7tU7WZNp0_RONcsm/preview" width="100%" height="100%" allow="autoplay"></iframe>
+            </div>
+
+            <p style="font-size: 1.8rem; color: var(--deep-rose); font-family: 'Dancing Script';">💖 Always & Forever Your Valentine 💖</p>
+        </div>
+    </div>
+
+    <script>
+        let slideIndex = 0;
+        function startSlideshow() {
+            const slides = document.querySelectorAll('.slide');
+            setInterval(() => {
+                slides[slideIndex].classList.remove('active');
+                slideIndex = (slideIndex + 1) % slides.length;
+                slides[slideIndex].classList.add('active');
+            }, 3000);
+        }
+
+        function spawnParticle(symbol) {
+            const p = document.createElement('div');
+            p.classList.add('particle');
+            p.innerHTML = symbol;
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.fontSize = (Math.random() * 20 + 20) + 'px';
+            p.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 4000);
+        }
+
+        function openLetter() {
+            document.getElementById('splash').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash').style.display = 'none';
+                document.getElementById('content').style.display = 'block';
+                startSlideshow();
+                window.scrollTo(0,0);
+            }, 800);
+            for(let i=0; i<60; i++) {
+                setTimeout(() => spawnParticle('❤️'), i * 80);
+            }
+        }
+
+        function moveNo() {
+            const btn = document.getElementById('noBtn');
+            btn.style.position = 'fixed';
+            btn.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            btn.style.top = Math.random() * (window.innerHeight - 50) + 'px';
+        }
+
+        function showSuccess() {
+            document.getElementById('content').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            window.scrollTo(0,0);
+            for(let i=0; i<100; i++) {
+                setTimeout(() => {
+                    const icons = ['❤️', '💖', '🌸', '✨'];
+                    spawnParticle(icons[Math.floor(Math.random()*icons.length)]);
+                }, i * 40);
+            }
+        }
+    </script>
+</body>
+</html>
